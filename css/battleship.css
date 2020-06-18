@@ -1,0 +1,25 @@
+#blackBoard.board {
+    background-color: #343a40;
+    border: 1px solid white;
+}
+
+#blackBoard.board td {
+    border: 1px solid white;
+    width: 2pc;
+    height: 2pc;
+    text-align: center;
+    color: white;
+}
+
+#whiteBoard.board {
+    background-color: white;
+    border: 1px solid gray;
+}
+
+#whiteBoard.board td {
+    border: 1px solid gray;
+    width: 2pc;
+    height: 2pc;
+    text-align: center;
+    color: gray;
+}
