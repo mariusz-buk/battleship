@@ -1,10 +1,33 @@
 async function main() {
-    await createConnectionToken();
+    await executeStep();
 }
 
-async function createConnectionToken() {
-    const result = await $.get('http://battleship.local:8080/getConntectionToken');
-    console.log(result);
+async function executeStep() {
+    try {
+        const result = await $.ajax({
+            url: '/get-step',
+            data: {},
+            // success: success,
+            dataType: 'json'
+        });
+        switch (result.command) {
+            case 'display':
+                displayMessage(result.message);
+                break;
+        }
+        setTimeout(executeStep, 3000)
+    } catch {
+        $('#message').text('Unknown error occurred');
+    }
+}
+
+function displayMessage(message) {
+    $('#message').text(message);
+    clearMessage();
+}
+
+function clearMessage() {
+    setTimeout(() => { $('#message').text(''); }, 2000);
 }
 
 $(document).ready(async () => {
