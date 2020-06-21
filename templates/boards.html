@@ -1,72 +1,16 @@
 <div class="col-md-auto">
     <table id="blackBoard" class="board">
         <tbody>
+        {{range .LeftArray}}
         <tr>
-            <td></td>
-            {{range Iterate 10}}
             <td>{{.}}</td>
+            {{if eq . ""}}
+                {{range $.TopArray}}<td>{{.}}</td>{{end}}
+            {{else}}
+                {{range $.TopArray}}<td></td>{{end}}
             {{end}}
         </tr>
-        <tr>
-            <td>A</td>
-            {{range Iterate 10}}
-                <td></td>
-            {{end}}
-        </tr>
-        <tr>
-            <td>B</td>
-            {{range Iterate 10}}
-                <td></td>
-            {{end}}
-        </tr>
-        <tr>
-            <td>C</td>
-            {{range Iterate 10}}
-                <td></td>
-            {{end}}
-        </tr>
-        <tr>
-            <td>D</td>
-            {{range Iterate 10}}
-                <td></td>
-            {{end}}
-        </tr>
-        <tr>
-            <td>E</td>
-            {{range Iterate 10}}
-                <td></td>
-            {{end}}
-        </tr>
-        <tr>
-            <td>F</td>
-            {{range Iterate 10}}
-                <td></td>
-            {{end}}
-        </tr>
-        <tr>
-            <td>G</td>
-            {{range Iterate 10}}
-                <td></td>
-            {{end}}
-        </tr>
-        <tr>
-            <td>H</td>
-            {{range Iterate 10}}
-                <td></td>
-            {{end}}
-        </tr>
-        <tr>
-            <td>I</td>
-            {{range Iterate 10}}
-                <td></td>
-            {{end}}
-        </tr>
-        <tr>
-            <td>J</td>
-            {{range Iterate 10}}
-                <td></td>
-            {{end}}
-        </tr>
+        {{end}}
         </tbody>
     </table>
 </div>
@@ -74,72 +18,16 @@
 <div class="col-md-auto">
     <table id="whiteBoard" class="board">
         <tbody>
-        <tr>
-            <td></td>
-            {{range Iterate 10}}
+        {{range .LeftArray}}
+            <tr>
                 <td>{{.}}</td>
-            {{end}}
-        </tr>
-        <tr>
-            <td>A</td>
-            {{range Iterate 10}}
-                <td></td>
-            {{end}}
-        </tr>
-        <tr>
-            <td>B</td>
-            {{range Iterate 10}}
-                <td></td>
-            {{end}}
-        </tr>
-        <tr>
-            <td>C</td>
-            {{range Iterate 10}}
-                <td></td>
-            {{end}}
-        </tr>
-        <tr>
-            <td>D</td>
-            {{range Iterate 10}}
-                <td></td>
-            {{end}}
-        </tr>
-        <tr>
-            <td>E</td>
-            {{range Iterate 10}}
-                <td></td>
-            {{end}}
-        </tr>
-        <tr>
-            <td>F</td>
-            {{range Iterate 10}}
-                <td></td>
-            {{end}}
-        </tr>
-        <tr>
-            <td>G</td>
-            {{range Iterate 10}}
-                <td></td>
-            {{end}}
-        </tr>
-        <tr>
-            <td>H</td>
-            {{range Iterate 10}}
-                <td></td>
-            {{end}}
-        </tr>
-        <tr>
-            <td>I</td>
-            {{range Iterate 10}}
-                <td></td>
-            {{end}}
-        </tr>
-        <tr>
-            <td>J</td>
-            {{range Iterate 10}}
-                <td></td>
-            {{end}}
-        </tr>
+                {{if eq . ""}}
+                    {{range $.TopArray}}<td>{{.}}</td>{{end}}
+                {{else}}
+                    {{range $.TopArray}}<td></td>{{end}}
+                {{end}}
+            </tr>
+        {{end}}
         </tbody>
     </table>
 </div>
