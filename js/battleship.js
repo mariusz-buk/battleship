@@ -45,13 +45,26 @@ function fillBoard(board, selector, color) {
     }
 }
 
-function displayMessage(message) {
-    $('#message').text(message);
-    clearMessage();
+function zeroFill( number, width )
+{
+    width -= number.toString().length;
+    if ( width > 0 )
+    {
+        return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
+    }
+    return number + ""; // always return a string
 }
 
-function clearMessage() {
-    setTimeout(() => { $('#message').text(''); }, 2000);
+function displayMessage(message) {
+    const msgField = $('#message');
+    const paragraph = document.createElement('p');
+    const date = new Date();
+    const dateString = '[' + zeroFill(date.getHours(), 2) + ':'
+        + zeroFill(date.getMinutes(), 2) + ':'
+        + zeroFill(date.getSeconds(), 2) + '] ';
+    const text = document.createTextNode(dateString + message);
+    paragraph.append(text);
+    msgField.prepend(paragraph);
 }
 
 $(document).ready(async () => {
