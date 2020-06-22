@@ -82,6 +82,11 @@ func (ship *singleShip) resetShip(shipSize, index int) {
 	ship.Index = index + 1
 }
 
+// This is brute-force algorithm. For production I would use something more clever.
+// There are 100 tries to create a board.
+// Each ship's position is resolved in less than 100 tries.
+// Ships positions are saved in shipsArmy.Board two dimensional slice.
+// First dimension is horizontal, second dimension is vertical.
 func (army *shipsArmy) setRandomPositions() bool {
 	for tries := 0; tries < 100; tries++ {
 
@@ -110,6 +115,7 @@ func (army *shipsArmy) setRandomPositions() bool {
 	return false
 }
 
+// try up to 100 times until you find ship's position
 func (ship *singleShip) findPosition(army *shipsArmy) bool {
 	found := false
 	for tries := 0; tries < 100; tries++ {
@@ -129,15 +135,23 @@ func (ship *singleShip) findPosition(army *shipsArmy) bool {
 	return false
 }
 
+// There is only checking from left to right, not right to left, as the result is the same.
+// Please notice how freeSpaceIndex is assigned to space around the ship.
+// This makes the space occupied, so no other ship can take.
 func (ship *singleShip) checkFromLeftToRight(x int, y int, army *shipsArmy) bool {
+	// if ship cannot fit inside the board at this position
 	if x+ship.Size >= boardSize {
 		return false
 	}
+	// find if space for ship is not occupied already
 	for l := 0; l < ship.Size; l++ {
 		if army.Board[x+l][y] != 0 {
 			return false
 		}
 	}
+	// space for the ship is found at this point
+
+	// reserve space at the left side of the ship
 	if x > 0 {
 		army.Board[x-1][y] = freeSpaceIndex
 		if y > 0 {
@@ -147,6 +161,7 @@ func (ship *singleShip) checkFromLeftToRight(x int, y int, army *shipsArmy) bool
 			army.Board[x-1][y+1] = freeSpaceIndex
 		}
 	}
+	// reserve space at the right side of the ship
 	if x+ship.Size < boardSize {
 		army.Board[x+ship.Size][y] = freeSpaceIndex
 		if y > 0 {
@@ -156,6 +171,7 @@ func (ship *singleShip) checkFromLeftToRight(x int, y int, army *shipsArmy) bool
 			army.Board[x+ship.Size][y+1] = freeSpaceIndex
 		}
 	}
+	// reserve space at the top and bottom of the ship and the ship itself
 	for l := 0; l < ship.Size; l++ {
 		if y > 0 {
 			army.Board[x+l][y-1] = freeSpaceIndex
@@ -168,15 +184,23 @@ func (ship *singleShip) checkFromLeftToRight(x int, y int, army *shipsArmy) bool
 	return true
 }
 
+// There is only checking from top to bottom, not bottom to top, as the result is the same.
+// Please notice how freeSpaceIndex is assigned to space around the ship.
+// This makes the space occupied, so no other ship can take.
 func (ship *singleShip) checkFromTopToBottom(x int, y int, army *shipsArmy) bool {
+	// if ship cannot fit inside the board at this position
 	if y+ship.Size >= boardSize {
 		return false
 	}
+	// find if space for ship is not occupied already
 	for l := 0; l < ship.Size; l++ {
 		if army.Board[x][y+l] != 0 {
 			return false
 		}
 	}
+	// space for the ship is found at this point
+
+	// reserve space at the top of the ship
 	if y > 0 {
 		army.Board[x][y-1] = freeSpaceIndex
 		if x > 0 {
@@ -186,6 +210,7 @@ func (ship *singleShip) checkFromTopToBottom(x int, y int, army *shipsArmy) bool
 			army.Board[x+1][y-1] = freeSpaceIndex
 		}
 	}
+	// reserve space at the bottom of the ship
 	if y+ship.Size < boardSize {
 		army.Board[x][y+ship.Size] = freeSpaceIndex
 		if x > 0 {
@@ -195,6 +220,7 @@ func (ship *singleShip) checkFromTopToBottom(x int, y int, army *shipsArmy) bool
 			army.Board[x+1][y+ship.Size] = freeSpaceIndex
 		}
 	}
+	// reserve space at the left and right side of the ship and the ship itself
 	for l := 0; l < ship.Size; l++ {
 		if x > 0 {
 			army.Board[x-1][y+l] = freeSpaceIndex
