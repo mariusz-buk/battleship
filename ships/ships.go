@@ -2,7 +2,6 @@ package ships
 
 import (
 	"encoding/gob"
-	"encoding/json"
 	"math/rand"
 	"net/http"
 
@@ -34,14 +33,6 @@ func Init(writer http.ResponseWriter, request *http.Request) bool {
 	session := sessions.CheckSession(writer, request)
 	ships, success := initShips()
 	if !success {
-		msg := struct {
-			Command string
-			Message string
-		}{
-			Command: "display",
-			Message: "Could not place all ships on the boards in 100 rounds",
-		}
-		json.NewEncoder(writer).Encode(msg)
 		return false
 	}
 

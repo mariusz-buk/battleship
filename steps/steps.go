@@ -31,6 +31,15 @@ func prepareShips(writer http.ResponseWriter, request *http.Request) {
 			Boards:  session.Values["ships"].(ships.BlackAndWhiteArmies),
 		}
 		json.NewEncoder(writer).Encode(msg)
+	} else {
+		msg := struct {
+			Command string
+			Message string
+		}{
+			Command: "display",
+			Message: "Could not place all ships on the boards in 100 rounds",
+		}
+		json.NewEncoder(writer).Encode(msg)
 	}
 }
 
