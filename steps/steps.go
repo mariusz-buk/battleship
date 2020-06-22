@@ -14,7 +14,7 @@ func firstMessage(writer http.ResponseWriter, request *http.Request) {
 		Message string
 	}{
 		Command: "display",
-		Message: "Randomly setting ships position",
+		Message: "Randomly setting ships' positions",
 	}
 	json.NewEncoder(writer).Encode(msg)
 }
