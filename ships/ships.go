@@ -28,7 +28,7 @@ type BlackAndWhiteArmies struct {
 	White, Black shipsArmy
 }
 
-func Init(writer http.ResponseWriter, request *http.Request) {
+func Init(writer http.ResponseWriter, request *http.Request) bool {
 	gob.Register(BlackAndWhiteArmies{})
 
 	session := sessions.CheckSession(writer, request)
@@ -39,18 +39,20 @@ func Init(writer http.ResponseWriter, request *http.Request) {
 			Message string
 		}{
 			Command: "display",
-			Message: "Could not place all ships on the board in 100 rounds",
+			Message: "Could not place all ships on the boards in 100 rounds",
 		}
 		json.NewEncoder(writer).Encode(msg)
-		return
+		return false
 	}
 
 	session.Values["ships"] = ships
 	err := session.Save(request, writer)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusInternalServerError)
-		return
+		return false
 	}
+
+	return true
 }
 
 func initBoard() boardArray {
@@ -99,7 +101,7 @@ func (army *shipsArmy) setRandomPositions() bool {
 		}
 		success := false
 
-		// find all ships position
+		// find all ships' position
 		for j := range army.Ships {
 			success = army.Ships[j].findPosition(army)
 			if !success {
@@ -137,12 +139,13 @@ func (ship *singleShip) findPosition(army *shipsArmy) bool {
 
 // There is only checking from left to right, not right to left, as the result is the same.
 // Please notice how freeSpaceIndex is assigned to space around the ship.
-// This makes the space occupied, so no other ship can take.
+// This makes the space occupied, so no other ship can take it.
 func (ship *singleShip) checkFromLeftToRight(x int, y int, army *shipsArmy) bool {
 	// if ship cannot fit inside the board at this position
 	if x+ship.Size >= boardSize {
 		return false
 	}
+
 	// find if space for ship is not occupied already
 	for l := 0; l < ship.Size; l++ {
 		if army.Board[x+l][y] != 0 {
@@ -186,12 +189,13 @@ func (ship *singleShip) checkFromLeftToRight(x int, y int, army *shipsArmy) bool
 
 // There is only checking from top to bottom, not bottom to top, as the result is the same.
 // Please notice how freeSpaceIndex is assigned to space around the ship.
-// This makes the space occupied, so no other ship can take.
+// This makes the space occupied, so no other ship can take it.
 func (ship *singleShip) checkFromTopToBottom(x int, y int, army *shipsArmy) bool {
 	// if ship cannot fit inside the board at this position
 	if y+ship.Size >= boardSize {
 		return false
 	}
+
 	// find if space for ship is not occupied already
 	for l := 0; l < ship.Size; l++ {
 		if army.Board[x][y+l] != 0 {

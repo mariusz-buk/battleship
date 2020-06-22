@@ -22,16 +22,16 @@ func firstMessage(writer http.ResponseWriter, request *http.Request) {
 func prepareShips(writer http.ResponseWriter, request *http.Request) {
 	session := sessions.CheckSession(writer, request)
 
-	ships.Init(writer, request)
-
-	msg := struct {
-		Command string
-		Boards  ships.BlackAndWhiteArmies
-	}{
-		Command: "fill-boards",
-		Boards:  session.Values["ships"].(ships.BlackAndWhiteArmies),
+	if ships.Init(writer, request) {
+		msg := struct {
+			Command string
+			Boards  ships.BlackAndWhiteArmies
+		}{
+			Command: "fill-boards",
+			Boards:  session.Values["ships"].(ships.BlackAndWhiteArmies),
+		}
+		json.NewEncoder(writer).Encode(msg)
 	}
-	json.NewEncoder(writer).Encode(msg)
 }
 
 func theEnd(writer http.ResponseWriter, request *http.Request) {
