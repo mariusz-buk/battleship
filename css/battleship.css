@@ -1,3 +1,7 @@
+.blackBoardBorder {
+    padding: 0px;
+    border: 1px solid #343a40;
+}
 #blackBoard.board {
     background-color: #343a40;
     border: 1px solid white;
