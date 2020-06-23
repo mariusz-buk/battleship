@@ -86,8 +86,14 @@ function hitReport(report) {
         if (sank) {
             message += 'It sank.';
         }
+
+        const audio = new Audio('/sounds/hit.ogg');
+        audio.play();
     } else {
         message = 'Misses';
+
+        const audio = new Audio('/sounds/missed.ogg');
+        audio.play();
     }
 
     displayMessage(message);
@@ -98,6 +104,9 @@ function newTarget(report) {
     cell.html('&#x1F4A3;');
 
     displayMessage(report.Message);
+
+    const audio = new Audio('/sounds/fire.ogg');
+    audio.play();
 }
 
 function zeroFill( number, width )
