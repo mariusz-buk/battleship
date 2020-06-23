@@ -1,4 +1,7 @@
 async function main() {
+    displayMessage('Welcome to Battleship demo.')
+    displayMessage('Armies do not see each other of course. They will shoot blindly.');
+    displayMessage('Randomly setting ships\' positions.');
     await executeStep();
 }
 
@@ -17,13 +20,19 @@ async function executeStep() {
             case 'fill-boards':
                 fillBoards(result.Boards);
                 break;
+            case 'new-target':
+                newTarget(result);
+                break;
+            case 'hit-report':
+                hitReport(result);
+                break;
             case 'the-end':
                 displayMessage(result.Message);
                 return;
         }
         setTimeout(executeStep, 3000)
     } catch (e) {
-        $('#message').text('Unknown error occurred: ' + e.message);
+        displayMessage('Unknown error occurred: ' + e.message);
     }
 }
 
@@ -43,6 +52,52 @@ function fillBoard(board, selector, color) {
             }
         }
     }
+}
+
+function getCell(board, x, y) {
+    let selector;
+    if (board === 'black') {
+        selector = '#blackBoard';
+    } else if (board === 'white') {
+        selector = '#whiteBoard';
+    }
+    const boardObject = $(selector).children('tbody');
+    const cellPosition = `tr:nth-child(${+y+2}) > td:nth-child(${+x+2})`;
+    return boardObject.find(cellPosition);
+}
+
+function hitReport(report) {
+    const x = report.X;
+    const y = report.Y;
+    const translatedX = report.TranslatedX;
+    const translatedY = report.TranslatedY;
+    const sank = report.Sank;
+    const hit = report.Hit;
+    const board = report.Board;
+
+    let message = '';
+    if (hit) {
+        if (board === 'black') {
+            message = 'Black ';
+        } else if (board === 'white') {
+            message = 'White ';
+        }
+        message += `ship at position ${translatedY}:${translatedX} has been hit. `;
+        if (sank) {
+            message += 'It sank.';
+        }
+    } else {
+        message = 'Misses';
+    }
+
+    displayMessage(message);
+}
+
+function newTarget(report) {
+    const cell = getCell(report.Board, report.X, report.Y);
+    cell.html('&#x1F4A3;');
+
+    displayMessage(report.Message);
 }
 
 function zeroFill( number, width )

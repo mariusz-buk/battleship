@@ -68,5 +68,11 @@ func main() {
 	r.PathPrefix("/js/").Handler(http.StripPrefix("/js/", http.FileServer(http.Dir("js/"))))
 	r.PathPrefix("/css/").Handler(http.StripPrefix("/css/", http.FileServer(http.Dir("css/"))))
 
-	log.Fatal(http.ListenAndServe(":80", r))
+	var err error
+	for port := 80; port < 90; port++ {
+		fmt.Printf("\nTrying port %d ...", port)
+		err = http.ListenAndServe(":"+strconv.Itoa(port), r)
+	}
+
+	log.Fatal(err)
 }
