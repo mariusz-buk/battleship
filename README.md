@@ -3,10 +3,15 @@
 # Battleship demo
 Battleship computer vs computer using Go
 
-This is very simple demo to show my current Go knowledge. That demo should be accessed via ```http://localhost``` 
-at standard port #80. It shows the boards and fill with the ships. That's all at this point.
+This is very simple demo to show my current Go knowledge. 
 
-I used in this demo:
+Currently supported:
+- boards creation
+- choosing position for all ships for both armies
+- sequential fires from one army to the other
+- sound effects
+
+Go knowledge I used in this demo:
 - variables, constants, types
 - slices
 - arrays
@@ -24,3 +29,6 @@ I used in this demo:
 - json
 
 To run the demo type ```go build battleship.go```
+
+That demo should be accessed via ```http://localhost``` 
+at standard port 80 (application tries to find free one from 80 to 89 - follow console messages). 
