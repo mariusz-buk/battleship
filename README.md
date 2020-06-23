@@ -1,3 +1,5 @@
+![Demo screenshot preview](./preview.png)
+
 # Battleship demo
 Battleship computer vs computer using Go
 
