@@ -1,11 +1,31 @@
+let soundFire;
+let soundHit;
+let soundMissed;
+let isDemoRunning = false;
+
 async function main() {
-    displayMessage('Welcome to Battleship demo.')
+    displayMessage('Welcome to Battleship demo.');
+    await loadSoundEffects();
     displayMessage('Armies do not see each other of course. They will shoot blindly.');
-    displayMessage('Randomly setting ships\' positions.');
-    await executeStep();
+    $('#startDemo').on('click', startOrPauseDemo);
+}
+
+async function startOrPauseDemo() {
+    if (isDemoRunning) {
+        isDemoRunning = false;
+        $('#startDemo').text('Continue');
+    } else {
+        isDemoRunning = true;
+        $('#startDemo').text('Pause');
+        await executeStep();
+    }
 }
 
 async function executeStep() {
+    if (!isDemoRunning) {
+        return;
+    }
+
     try {
         const result = await $.ajax({
             url: '/get-step',
@@ -87,26 +107,39 @@ function hitReport(report) {
             message += 'It sank.';
         }
 
-        const audio = new Audio('/sounds/hit.ogg');
-        audio.play();
+        const cell = getCell(board, x, y);
+        cell.css({
+            backgroundImage: 'url(/images/explosion.gif)',
+            backgroundPosition: 'center',
+            backgroundSize: 'contain',
+        });
+
+        soundHit.play();
     } else {
+        const cell = getCell(board, x, y);
+        cell.html('&#x1F4A3;');
+
         message = 'Misses';
 
-        const audio = new Audio('/sounds/missed.ogg');
-        audio.play();
+        soundMissed.play();
     }
 
     displayMessage(message);
 }
 
 function newTarget(report) {
-    const cell = getCell(report.Board, report.X, report.Y);
-    cell.html('&#x1F4A3;');
-
     displayMessage(report.Message);
 
-    const audio = new Audio('/sounds/fire.ogg');
-    audio.play();
+    soundFire.play();
+}
+
+async function loadSoundEffects() {
+    soundFire = new Audio('/sounds/fire.ogg');
+    await soundFire.load();
+    soundMissed = new Audio('/sounds/missed.ogg');
+    await soundMissed.load();
+    soundHit = new Audio('/sounds/hit.ogg');
+    await soundHit.load();
 }
 
 function zeroFill( number, width )
